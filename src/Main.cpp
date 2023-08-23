@@ -2,16 +2,76 @@
 // 
 
 #include "stdafx.h"
+#include "Pessoa.h"
+#include "Paciente.h"
+#include "ProntoSocorro.h"
 
-void* test(void* arg)
+ProntoSocorro g_PS;
+pthread_t g_Thread[4];
+
+int g_PacienteCounter = 0;
+
+void* NovaPessoa(void* arg)
 {
+	TipoPessoa tp = (TipoPessoa)(int)arg;
+	Pessoa* p = NULL;
+
+	if (tp == TipoPessoa::Paciente)
+		p = new Paciente(g_PacienteCounter);
+	else if (tp == TipoPessoa::Medico)
+		p = new Medico();
+	else if (tp == TipoPessoa::ChefeEnfermeiro)
+		p = new ChefeEnfermeiro();
+	else if (tp == TipoPessoa::Enfermeiro)
+		p = new Enfermeiro();
+
+	if (p)
+		p->Executa();
+
 	return NULL;
 }
 
 int main(int argc, const char* argv[])
 {
+	srand((unsigned int)_time32(0));
+
 	pthread_t th;
-	pthread_create(&th, NULL, test, NULL);
+
+	int thc = 0;
+	time_t init = time(0);
+	const int MAX = 5 * 60;
+
+	if (pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Medico) != 0 ||
+		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::ChefeEnfermeiro) != 0 ||
+		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Enfermeiro) != 0 ||
+		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Enfermeiro))
+		printf("Falha ao criar as threads.\n");
+	else
+	{
+		thc++;
+
+		do
+		{
+			if ((rand() % 100) < 2)
+			{
+				if (pthread_create(&th, NULL, NovaPessoa, (void*)TipoPessoa::Paciente) != 0)
+					printf("Falha ao criar uma thread para um Paciente novo.\n");
+				else
+				{
+					g_PS.ChegadaDePaciente(th, g_PacienteCounter);
+					g_PacienteCounter++;
+				}
+			}
+
+			Sleep(10);
+
+		} while ((time(0) - init) < MAX);
+	}
+
+	g_PS.Fechamento();
+
+	for (int thId = 0; thId < thc - 1; ++thId)
+		pthread_join(g_Thread[thId], NULL);
 
 	return EXIT_SUCCESS;
 }
