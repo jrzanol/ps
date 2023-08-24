@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Pessoas">
+      <UniqueIdentifier>{d64db37d-c277-4fb4-a7a0-c48d90f52ee0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objetos">
+      <UniqueIdentifier>{23482216-3753-4ace-ba35-dc98de6128df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -21,19 +27,43 @@
     <ClCompile Include="src\stdafx.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="src\Medico.cpp">
+      <Filter>Pessoas</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ChefeEnfermeiro.cpp">
+      <Filter>Pessoas</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enfermeiro.cpp">
+      <Filter>Pessoas</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProntoSocorro.cpp">
+      <Filter>Objetos</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Paciente.cpp">
+      <Filter>Pessoas</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="src\Paciente.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
+    <ClInclude Include="src\Medico.h">
+      <Filter>Pessoas</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ChefeEnfermeiro.h">
+      <Filter>Pessoas</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Enfermeiro.h">
+      <Filter>Pessoas</Filter>
     </ClInclude>
     <ClInclude Include="src\ProntoSocorro.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
+      <Filter>Objetos</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Paciente.h">
+      <Filter>Pessoas</Filter>
     </ClInclude>
     <ClInclude Include="src\Pessoa.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
+      <Filter>Pessoas</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

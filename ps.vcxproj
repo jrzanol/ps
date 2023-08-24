@@ -139,13 +139,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ChefeEnfermeiro.cpp" />
+    <ClCompile Include="src\Enfermeiro.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Medico.cpp" />
+    <ClCompile Include="src\Paciente.cpp" />
+    <ClCompile Include="src\ProntoSocorro.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ChefeEnfermeiro.h" />
+    <ClInclude Include="src\Enfermeiro.h" />
+    <ClInclude Include="src\Medico.h" />
     <ClInclude Include="src\Paciente.h" />
     <ClInclude Include="src\Pessoa.h" />
     <ClInclude Include="src\ProntoSocorro.h" />

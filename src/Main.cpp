@@ -2,14 +2,10 @@
 // 
 
 #include "stdafx.h"
-#include "Pessoa.h"
-#include "Paciente.h"
 #include "ProntoSocorro.h"
 
 ProntoSocorro g_PS;
 pthread_t g_Thread[4];
-
-int g_PacienteCounter = 0;
 
 void* NovaPessoa(void* arg)
 {
@@ -17,13 +13,15 @@ void* NovaPessoa(void* arg)
 	Pessoa* p = NULL;
 
 	if (tp == TipoPessoa::Paciente)
-		p = new Paciente(g_PacienteCounter);
+		p = new Paciente();
 	else if (tp == TipoPessoa::Medico)
 		p = new Medico();
 	else if (tp == TipoPessoa::ChefeEnfermeiro)
 		p = new ChefeEnfermeiro();
 	else if (tp == TipoPessoa::Enfermeiro)
 		p = new Enfermeiro();
+
+	g_PS.Chegada(p);
 
 	if (p)
 		p->Executa();
@@ -56,11 +54,6 @@ int main(int argc, const char* argv[])
 			{
 				if (pthread_create(&th, NULL, NovaPessoa, (void*)TipoPessoa::Paciente) != 0)
 					printf("Falha ao criar uma thread para um Paciente novo.\n");
-				else
-				{
-					g_PS.ChegadaDePaciente(th, g_PacienteCounter);
-					g_PacienteCounter++;
-				}
 			}
 
 			Sleep(10);
