@@ -3,9 +3,10 @@
 
 #include "stdafx.h"
 #include "ProntoSocorro.h"
+#include "Nebulizador.h"
 
 ProntoSocorro g_PS;
-pthread_t g_Thread[4];
+pthread_t g_Thread[7];
 
 void* NovaPessoa(void* arg)
 {
@@ -20,6 +21,8 @@ void* NovaPessoa(void* arg)
 		p = new ChefeEnfermeiro();
 	else if (tp == TipoPessoa::Enfermeiro)
 		p = new Enfermeiro();
+	else if (tp == TipoPessoa::Nebulizador)
+		p = new Nebulizador();
 
 	g_PS.Chegada(p);
 
@@ -40,13 +43,18 @@ int main(int argc, const char* argv[])
 	const int MAX = 5 * 60;
 
 	if (pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Medico) != 0 ||
+		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Medico) != 0 ||
 		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::ChefeEnfermeiro) != 0 ||
 		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Enfermeiro) != 0 ||
-		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Enfermeiro))
+		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Enfermeiro) ||
+		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Nebulizador) ||
+		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Nebulizador))
 		printf("Falha ao criar as threads.\n");
 	else
 	{
 		thc++;
+
+		g_PS.Iniciar();
 
 		do
 		{
@@ -62,6 +70,7 @@ int main(int argc, const char* argv[])
 	}
 
 	g_PS.Fechamento();
+	g_PS.Exibir();
 
 	for (int thId = 0; thId < thc - 1; ++thId)
 		pthread_join(g_Thread[thId], NULL);

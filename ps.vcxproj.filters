@@ -42,6 +42,9 @@
     <ClCompile Include="src\Paciente.cpp">
       <Filter>Pessoas</Filter>
     </ClCompile>
+    <ClCompile Include="src\Nebulizador.cpp">
+      <Filter>Objetos</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\stdafx.h">
@@ -64,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="src\Pessoa.h">
       <Filter>Pessoas</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Nebulizador.h">
+      <Filter>Objetos</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

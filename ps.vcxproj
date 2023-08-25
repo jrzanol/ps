@@ -143,6 +143,7 @@
     <ClCompile Include="src\Enfermeiro.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Medico.cpp" />
+    <ClCompile Include="src\Nebulizador.cpp" />
     <ClCompile Include="src\Paciente.cpp" />
     <ClCompile Include="src\ProntoSocorro.cpp" />
     <ClCompile Include="src\stdafx.cpp">
@@ -154,6 +155,7 @@
     <ClInclude Include="src\ChefeEnfermeiro.h" />
     <ClInclude Include="src\Enfermeiro.h" />
     <ClInclude Include="src\Medico.h" />
+    <ClInclude Include="src\Nebulizador.h" />
     <ClInclude Include="src\Paciente.h" />
     <ClInclude Include="src\Pessoa.h" />
     <ClInclude Include="src\ProntoSocorro.h" />

@@ -8,7 +8,8 @@ enum class TipoPessoa
 	Paciente = 0,
 	Medico,
 	ChefeEnfermeiro,
-	Enfermeiro
+	Enfermeiro,
+	Nebulizador
 };
 
 class Pessoa

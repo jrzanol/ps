@@ -11,23 +11,20 @@ public:
 	~Paciente();
 
 	void Executa();
-	void Alterar(int, int, int, float);
 
 	int m_PacienteId;
 	int m_Idade;
 
-	int GetFreqCardiaca() const { return m_FreqCardiaca; }
-	int GetPressaoArterial() const { return m_PressaoArterial; }
-	int GetFreqRespiratoria() const { return m_FreqRespiratoria; }
-	float GetTempCorporal() const { return m_TempCorporal; }
+	bool m_RecebeuAlta;
+	bool m_UtilizandoNebulizador;
+	bool m_SendoExaminado;
+	long m_UltimaVezExaminado;
 
-private:
+	int m_SinalVital;
 	int m_FreqCardiaca;
 	int m_PressaoArterial;
 	int m_FreqRespiratoria;
 
 	float m_TempCorporal;
-
-	pthread_mutex_t m_MutexAlter;
 };
 

@@ -16,28 +16,23 @@ Paciente::Paciente() : Pessoa(TipoPessoa::Paciente)
 
 	m_TempCorporal = 0.f;
 
-	pthread_mutex_init(&m_MutexAlter, NULL);
+	m_RecebeuAlta = false;
+	m_UtilizandoNebulizador = false;
+	m_SendoExaminado = false;
+	m_UltimaVezExaminado = 0;
 }
 
 Paciente::~Paciente()
 {
-	pthread_mutex_destroy(&m_MutexAlter);
 }
 
 void Paciente::Executa()
 {
+	do
+	{
+		if (m_SinalVital == 0)
+			printf("Paciente %d esta com falta de ar.", m_PacienteId);
+
+		Sleep(SLEEP_TIMER);
+	} while (!m_RecebeuAlta);
 }
-
-void Paciente::Alterar(int car, int art, int res, float cor)
-{
-	pthread_mutex_lock(&m_MutexAlter);
-
-	m_FreqCardiaca = car;
-	m_PressaoArterial = art;
-	m_FreqRespiratoria = res;
-
-	m_TempCorporal = cor;
-
-	pthread_mutex_unlock(&m_MutexAlter);
-}
-

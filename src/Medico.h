@@ -11,5 +11,7 @@ public:
 	~Medico();
 
 	void Executa();
+
+	long m_TempoNecessario;
 };
 
