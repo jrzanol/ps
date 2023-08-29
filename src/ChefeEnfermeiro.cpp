@@ -24,30 +24,18 @@ void ChefeEnfermeiro::Executa()
 		{
 			if ((prox = g_PS.ProximoPacienteNeb()) != NULL)
 			{
-				Sleep(SLEEP_TIMER);
-
-				int timer = 2;
-
-				if (prox->m_SinalVital < 6)
-					timer++;
-				else if (prox->m_SinalVital < 4)
-					timer += 2;
-				else if (prox->m_SinalVital < 2)
-					timer += 3;
+				Log("Nebulizador %d esta sendo usado no Paciente %d.", neb->m_NebulizadorId, prox->m_PacienteId);
 
 				neb->TrocaPaciente(prox);
 
-				Sleep(SLEEP_TIMER * timer);
-
-				neb->TrocaPaciente(NULL);
+				Sleep(SLEEP_TIMER);
 			}
-
-			neb->m_SendoUtilizado = false;
-
-			Sleep(SLEEP_TIMER);
+			else
+				neb->m_SendoUtilizado = false;
 		}
 
-		Sleep(SLEEP_TIMER * 5);
+		Sleep(SLEEP_TIMER * 10);
+
 	} while (!g_PS.Fechado() || g_PS.QntddPaciente() > 0);
 }
 

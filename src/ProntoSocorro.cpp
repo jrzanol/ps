@@ -21,8 +21,10 @@ ProntoSocorro::~ProntoSocorro()
 {
 }
 
-void ProntoSocorro::Chegada(Pessoa* p)
+bool ProntoSocorro::Chegada(Pessoa* p)
 {
+	bool success = true;
+
 	pthread_mutex_lock(&m_MutexMovPac);
 
 	if (p->Tipo() == TipoPessoa::Paciente)
@@ -30,10 +32,13 @@ void ProntoSocorro::Chegada(Pessoa* p)
 		Paciente* pp = (Paciente*)p;
 
 		if (m_ListPac.size() >= 16)
-			printf("Paciente %d foi encaminhado para outro lugar.\n", pp->m_PacienteId);
+		{
+			Log("Paciente %d foi encaminhado para outro lugar.", pp->m_PacienteId);
+			success = false;
+		}
 		else
 		{
-			printf("Paciente %d entrou no Pronto Socorro.\n", pp->m_PacienteId);
+			Log("Paciente %d entrou no Pronto Socorro.", pp->m_PacienteId);
 
 			m_ListPac.push_back(pp);
 		}
@@ -42,6 +47,7 @@ void ProntoSocorro::Chegada(Pessoa* p)
 		m_ListMedicos.push_back(p);
 
 	pthread_mutex_unlock(&m_MutexMovPac);
+	return success;
 }
 
 void ProntoSocorro::Fechamento()
@@ -139,7 +145,7 @@ Paciente* ProntoSocorro::ProximoPacienteMed()
 		if (it->m_SendoExaminado || it->m_UtilizandoNebulizador)
 			continue;
 
-		if (it->m_Idade < year)
+		if (it->m_Idade > year)
 		{
 			year = it->m_Idade;
 			pac = it;
@@ -165,9 +171,9 @@ void ProntoSocorro::RemovePaciente(Paciente* pac)
 
 void ProntoSocorro::Exibir()
 {
-	printf("Dados do Pronto Socorro:\n\n");
-	printf("Atendimentos realizados: %d\n", m_Atendimentos);
-	printf("Encaminhamentos realizados: %d\n", m_Encaminhados);
-	printf("Niveis Vitais que ficaram baixos: %d\n\n", m_NiveisVitaisBaixo);
+	Log("Dados do Pronto Socorro:");
+	Log("Atendimentos realizados: %d", m_Atendimentos);
+	Log("Encaminhamentos realizados: %d", m_Encaminhados);
+	Log("Niveis Vitais que ficaram baixos: %d", m_NiveisVitaisBaixo);
 }
 

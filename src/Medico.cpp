@@ -7,7 +7,6 @@
 
 Medico::Medico() : Pessoa(TipoPessoa::Medico)
 {
-	m_TempoNecessario = 0;
 }
 
 Medico::~Medico()
@@ -26,14 +25,15 @@ void Medico::Executa()
 		{
 			Sleep(SLEEP_TIMER);
 
-			printf("Paciente %d esta sendo atendido pelo Medico.\n", prox->m_PacienteId);
+			Log("Paciente %d esta sendo atendido pelo Medico.", prox->m_PacienteId);
 
-			Sleep(SLEEP_TIMER * m_TempoNecessario);
+			int tempoNecessario = (rand() % 10) + 20;
+			Sleep(SLEEP_TIMER * tempoNecessario);
 
 			prox->m_SinalVital = 10;
 			prox->m_RecebeuAlta = true;
 
-			printf("Paciente %d recebeu alta.\n", prox->m_PacienteId);
+			Log("Paciente %d recebeu alta.", prox->m_PacienteId);
 		}
 
 	} while (!g_PS.Fechado() || g_PS.QntddPaciente() > 0);

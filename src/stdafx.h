@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <cstdarg>
 
 #include <list>
 #include <tuple>
@@ -17,3 +18,6 @@
 #include <Windows.h>
 
 const int SLEEP_TIMER = 1000;
+
+void Log(const char*, ...);
+

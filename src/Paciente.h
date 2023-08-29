@@ -22,9 +22,9 @@ public:
 
 	int m_SinalVital;
 	int m_FreqCardiaca;
-	int m_PressaoArterial;
 	int m_FreqRespiratoria;
 
+	float m_PressaoArterial;
 	float m_TempCorporal;
 };
 

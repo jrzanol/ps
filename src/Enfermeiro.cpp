@@ -20,7 +20,7 @@ void Enfermeiro::Executa()
 	{
 		Paciente* prox = NULL;
 
-		while ((prox = g_PS.ProximoPaciente()) != NULL)
+		if ((prox = g_PS.ProximoPaciente()) != NULL)
 		{
 			Sleep(SLEEP_TIMER);
 
@@ -29,15 +29,13 @@ void Enfermeiro::Executa()
 				int prev = prox->m_SinalVital;
 				prox->m_SinalVital -= (rand() % 2) + 1;
 
-				printf("Paciente %d teve seu Sinal Vital mudado de %d para %d.\n", prox->m_PacienteId, prev, prox->m_SinalVital);
+				Log("Paciente %d teve seu Sinal Vital mudado de %d para %d.", prox->m_PacienteId, prev, prox->m_SinalVital);
 			}
 			else
-				printf("Paciente %d esta em risco!\n", prox->m_PacienteId);
-
-			Sleep(SLEEP_TIMER);
+				Log("Paciente %d esta em risco!", prox->m_PacienteId);
 		}
 
-		Sleep(SLEEP_TIMER * 5);
+		Sleep(SLEEP_TIMER * 15);
 	} while (!g_PS.Fechado() || g_PS.QntddPaciente() > 0);
 }
 

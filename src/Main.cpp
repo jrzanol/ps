@@ -24,9 +24,7 @@ void* NovaPessoa(void* arg)
 	else if (tp == TipoPessoa::Nebulizador)
 		p = new Nebulizador();
 
-	g_PS.Chegada(p);
-
-	if (p)
+	if (p && g_PS.Chegada(p))
 		p->Executa();
 
 	return NULL;
@@ -46,35 +44,39 @@ int main(int argc, const char* argv[])
 		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Medico) != 0 ||
 		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::ChefeEnfermeiro) != 0 ||
 		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Enfermeiro) != 0 ||
-		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Enfermeiro) ||
-		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Nebulizador) ||
-		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Nebulizador))
-		printf("Falha ao criar as threads.\n");
+		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Enfermeiro) != 0 ||
+		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Nebulizador) != 0 ||
+		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Nebulizador) != 0)
+		Log("Falha ao criar as threads.");
 	else
 	{
 		thc++;
 
 		g_PS.Iniciar();
+		Log("Pronto Socorro iniciado!");
 
 		do
 		{
-			if ((rand() % 100) < 2)
+			if ((rand() % 100) < 20)
 			{
 				if (pthread_create(&th, NULL, NovaPessoa, (void*)TipoPessoa::Paciente) != 0)
-					printf("Falha ao criar uma thread para um Paciente novo.\n");
+					Log("Falha ao criar uma thread para um Paciente novo.");
 			}
 
-			Sleep(10);
+			Sleep(SLEEP_TIMER);
 
 		} while ((time(0) - init) < MAX);
 	}
 
 	g_PS.Fechamento();
-	g_PS.Exibir();
+
+	Log("Pronto Socorro fechado.");
+	Log("Esperando o atendimento dos pacientes...");
 
 	for (int thId = 0; thId < thc - 1; ++thId)
 		pthread_join(g_Thread[thId], NULL);
 
+	g_PS.Exibir();
 	return EXIT_SUCCESS;
 }
 

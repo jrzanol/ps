@@ -19,7 +19,7 @@ public:
 	int QntddPaciente() { return m_ListPac.size(); }
 	bool Fechado() { return m_Iniciado && m_Fechado; }
 
-	void Chegada(Pessoa*);
+	bool Chegada(Pessoa*);
 	void Fechamento();
 
 	Nebulizador* ProximoNebulizador();
