@@ -16,9 +16,9 @@ public:
 	~ProntoSocorro();
 
 	void Iniciar() { m_Iniciado = true; }
-	int QntddPaciente() { return m_ListPac.size(); }
 	bool Fechado() { return m_Iniciado && m_Fechado; }
 
+	int QntddPaciente();
 	bool Chegada(Pessoa*);
 	void Fechamento();
 
@@ -31,13 +31,14 @@ public:
 
 	void Exibir();
 
+	int m_NiveisVitaisBaixo;
+
 private:
 	bool m_Iniciado;
 	bool m_Fechado;
 
 	int m_Atendimentos;
 	int m_Encaminhados;
-	int m_NiveisVitaisBaixo;
 
 	pthread_mutex_t m_MutexMovPac; // Mutex para m_ListPac.
 	pthread_mutex_t m_MutexMedicos; // Mutex para m_ListMedicos.

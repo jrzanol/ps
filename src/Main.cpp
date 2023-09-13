@@ -38,7 +38,7 @@ int main(int argc, const char* argv[])
 
 	int thc = 0;
 	time_t init = time(0);
-	const int MAX = 5 * 60;
+	const int MAX = 1 * 30;
 
 	if (pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Medico) != 0 ||
 		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Medico) != 0 ||
@@ -57,7 +57,13 @@ int main(int argc, const char* argv[])
 
 		do
 		{
-			if ((rand() % 100) < 20)
+			int rate = 50;
+			int qntdd = g_PS.QntddPaciente();
+
+			if (qntdd >= 16)
+				rate = 5;
+
+			if ((rand() % 100) < rate)
 			{
 				if (pthread_create(&th, NULL, NovaPessoa, (void*)TipoPessoa::Paciente) != 0)
 					Log("Falha ao criar uma thread para um Paciente novo.");
@@ -77,6 +83,11 @@ int main(int argc, const char* argv[])
 		pthread_join(g_Thread[thId], NULL);
 
 	g_PS.Exibir();
+
+#ifdef NDEBUG
+	system("pause");
+#endif
+
 	return EXIT_SUCCESS;
 }
 

@@ -34,7 +34,9 @@ bool ProntoSocorro::Chegada(Pessoa* p)
 		if (m_ListPac.size() >= 16)
 		{
 			Log("Paciente %d foi encaminhado para outro lugar.", pp->m_PacienteId);
+
 			success = false;
+			m_Encaminhados++;
 		}
 		else
 		{
@@ -53,6 +55,16 @@ bool ProntoSocorro::Chegada(Pessoa* p)
 void ProntoSocorro::Fechamento()
 {
 	m_Fechado = true;
+}
+
+int ProntoSocorro::QntddPaciente()
+{
+	size_t len = 0;
+
+	pthread_mutex_lock(&m_MutexMovPac);
+	len = m_ListPac.size();
+	pthread_mutex_unlock(&m_MutexMovPac);
+	return len;
 }
 
 Nebulizador* ProntoSocorro::ProximoNebulizador()
@@ -83,7 +95,7 @@ Nebulizador* ProntoSocorro::ProximoNebulizador()
 
 Paciente* ProntoSocorro::ProximoPaciente()
 {
-	long lower = -1, timer = _time32(0);
+	long timer = _time32(0), lower = timer;
 	Paciente* lowerPac = NULL;
 
 	pthread_mutex_lock(&m_MutexMovPac);
@@ -101,7 +113,10 @@ Paciente* ProntoSocorro::ProximoPaciente()
 	}
 
 	if (lowerPac)
+	{
 		lowerPac->m_SendoExaminado = true;
+		lowerPac->m_UltimaVezExaminado = timer;
+	}
 
 	pthread_mutex_unlock(&m_MutexMovPac);
 	return lowerPac;
@@ -109,14 +124,14 @@ Paciente* ProntoSocorro::ProximoPaciente()
 
 Paciente* ProntoSocorro::ProximoPacienteNeb()
 {
-	long lower = -1;
+	long lower = 10;
 	Paciente* lowerPac = NULL;
 
 	pthread_mutex_lock(&m_MutexMovPac);
 
 	for (auto* it : m_ListPac)
 	{
-		if (it->m_SendoExaminado || it->m_UtilizandoNebulizador)
+		if (it->m_SendoExaminado || it->m_UtilizandoNebulizador || it->m_SinalVital >= 8)
 			continue;
 
 		if (it->m_SinalVital < lower)
@@ -153,7 +168,10 @@ Paciente* ProntoSocorro::ProximoPacienteMed()
 	}
 
 	if (pac)
+	{
 		m_ListPac.remove(pac);
+		m_Atendimentos++;
+	}
 
 	pthread_mutex_unlock(&m_MutexMovPac);
 	return pac;

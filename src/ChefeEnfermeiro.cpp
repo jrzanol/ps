@@ -34,7 +34,7 @@ void ChefeEnfermeiro::Executa()
 				neb->m_SendoUtilizado = false;
 		}
 
-		Sleep(SLEEP_TIMER * 10);
+		Sleep(SLEEP_TIMER * 5);
 
 	} while (!g_PS.Fechado() || g_PS.QntddPaciente() > 0);
 }

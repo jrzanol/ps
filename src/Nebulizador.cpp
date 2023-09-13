@@ -33,9 +33,9 @@ void Nebulizador::Executa()
 			if (m_Utilizador)
 			{
 				if (m_Count == 0)
-					m_Count = 15;
+					m_Count = 10;
 
-				m_Utilizador->m_SinalVital += (rand() % 3) + 2;
+				m_Utilizador->m_SinalVital += (rand() % 2) + 1;
 
 				if (m_Utilizador->m_SinalVital > 10)
 					m_Utilizador->m_SinalVital = 10;
