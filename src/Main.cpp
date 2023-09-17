@@ -6,7 +6,7 @@
 #include "Nebulizador.h"
 
 ProntoSocorro g_PS;
-pthread_t g_Thread[7];
+pthread_t g_Thread[9];
 
 void* NovaPessoa(void* arg)
 {
@@ -38,13 +38,15 @@ int main(int argc, const char* argv[])
 
 	int thc = 0;
 	time_t init = time(0);
-	const int MAX = 1 * 30;
+	const int MAX = 30;
 
 	if (pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Medico) != 0 ||
 		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Medico) != 0 ||
 		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::ChefeEnfermeiro) != 0 ||
 		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Enfermeiro) != 0 ||
 		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Enfermeiro) != 0 ||
+		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Nebulizador) != 0 ||
+		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Nebulizador) != 0 ||
 		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Nebulizador) != 0 ||
 		pthread_create(&g_Thread[thc++], NULL, NovaPessoa, (void*)TipoPessoa::Nebulizador) != 0)
 		Log("Falha ao criar as threads.");
@@ -61,7 +63,7 @@ int main(int argc, const char* argv[])
 			int qntdd = g_PS.QntddPaciente();
 
 			if (qntdd >= 16)
-				rate = 5;
+				rate = 10;
 
 			if ((rand() % 100) < rate)
 			{

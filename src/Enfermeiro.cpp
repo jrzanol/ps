@@ -26,7 +26,7 @@ void Enfermeiro::Executa()
 			{
 				int prev = prox->m_SinalVital;
 
-				prox->m_SinalVital -= (rand() % 2) + 1;
+				prox->m_SinalVital -= (rand() % 3) + 1;
 				if (prox->m_SinalVital < 0)
 					prox->m_SinalVital = 0;
 

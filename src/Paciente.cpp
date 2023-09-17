@@ -10,7 +10,7 @@ Paciente::Paciente() : Pessoa(TipoPessoa::Paciente)
 	static int g_PacienteIdCounter = 1;
 	m_PacienteId = g_PacienteIdCounter++;
 
-	m_SinalVital = (rand() % 5) + 4;
+	m_SinalVital = (rand() % 5) + 3;
 	m_Idade = (rand() % 60) + 20;
 	m_FreqCardiaca = (rand() % 40) + 60;
 	m_FreqRespiratoria = 16;

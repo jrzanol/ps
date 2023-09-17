@@ -17,7 +17,7 @@
 
 #include <Windows.h>
 
-const int SLEEP_TIMER = 1000;
+const int SLEEP_TIMER = 1;
 
 void Log(const char*, ...);
 

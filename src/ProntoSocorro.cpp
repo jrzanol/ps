@@ -67,6 +67,30 @@ int ProntoSocorro::QntddPaciente()
 	return len;
 }
 
+bool ProntoSocorro::MedicoEstaEsperando()
+{
+	bool retn = false;
+
+	pthread_mutex_lock(&m_MutexMedicos);
+
+	for (auto* it : m_ListMedicos)
+	{
+		if (it->Tipo() == TipoPessoa::Medico)
+		{
+			Medico* m = (Medico*)it;
+
+			if (m->Waiting)
+			{
+				retn = true;
+				break;
+			}
+		}
+	}
+
+	pthread_mutex_unlock(&m_MutexMedicos);
+	return retn;
+}
+
 Nebulizador* ProntoSocorro::ProximoNebulizador()
 {
 	Nebulizador* nebr = NULL;
@@ -95,56 +119,66 @@ Nebulizador* ProntoSocorro::ProximoNebulizador()
 
 Paciente* ProntoSocorro::ProximoPaciente()
 {
-	long timer = _time32(0), lower = timer;
 	Paciente* lowerPac = NULL;
 
-	pthread_mutex_lock(&m_MutexMovPac);
-	
-	for (auto* it : m_ListPac)
+	if (!MedicoEstaEsperando())
 	{
-		if (it->m_SendoExaminado || it->m_UtilizandoNebulizador)
-			continue;
+		long timer = _time32(0), lower = timer;
 
-		if (it->m_UltimaVezExaminado < lower)
+		pthread_mutex_lock(&m_MutexMovPac);
+
+		for (auto* it : m_ListPac)
 		{
-			lower = it->m_UltimaVezExaminado;
-			lowerPac = it;
+			if (it->m_SendoExaminado || it->m_UtilizandoNebulizador)
+				continue;
+
+			if (it->m_UltimaVezExaminado < lower)
+			{
+				lower = it->m_UltimaVezExaminado;
+				lowerPac = it;
+			}
 		}
+
+		if (lowerPac)
+		{
+			lowerPac->m_SendoExaminado = true;
+			lowerPac->m_UltimaVezExaminado = timer;
+		}
+
+		pthread_mutex_unlock(&m_MutexMovPac);
 	}
 
-	if (lowerPac)
-	{
-		lowerPac->m_SendoExaminado = true;
-		lowerPac->m_UltimaVezExaminado = timer;
-	}
-
-	pthread_mutex_unlock(&m_MutexMovPac);
 	return lowerPac;
 }
 
 Paciente* ProntoSocorro::ProximoPacienteNeb()
 {
-	long lower = 10;
 	Paciente* lowerPac = NULL;
 
-	pthread_mutex_lock(&m_MutexMovPac);
-
-	for (auto* it : m_ListPac)
+	if (!MedicoEstaEsperando())
 	{
-		if (it->m_SendoExaminado || it->m_UtilizandoNebulizador || it->m_SinalVital >= 8)
-			continue;
+		long lower = 10;
 
-		if (it->m_SinalVital < lower)
+		pthread_mutex_lock(&m_MutexMovPac);
+
+		for (auto* it : m_ListPac)
 		{
-			lower = it->m_SinalVital;
-			lowerPac = it;
+			if (it->m_SendoExaminado || it->m_UtilizandoNebulizador || it->m_SinalVital >= 8)
+				continue;
+
+			if (it->m_SinalVital < lower)
+			{
+				lower = it->m_SinalVital;
+				lowerPac = it;
+			}
 		}
+
+		if (lowerPac)
+			lowerPac->m_UtilizandoNebulizador = true;
+
+		pthread_mutex_unlock(&m_MutexMovPac);
 	}
 
-	if (lowerPac)
-		lowerPac->m_UtilizandoNebulizador = true;
-
-	pthread_mutex_unlock(&m_MutexMovPac);
 	return lowerPac;
 }
 

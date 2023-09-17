@@ -11,5 +11,6 @@ public:
 	~Medico();
 
 	void Executa();
+	bool Waiting;
 };
 

@@ -45,6 +45,8 @@ private:
 
 	std::list<Paciente*> m_ListPac;
 	std::list<Pessoa*> m_ListMedicos;
+
+	bool MedicoEstaEsperando();
 };
 
 extern ProntoSocorro g_PS;
